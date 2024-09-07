@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { fetchAnalytics } from './api/Analytics';
 import { createStory } from './api/Stories';
+import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 
 const Author = ({ storyId }) => {
   const [analytics, setAnalytics] = useState([]);
   const [newStory, setNewStory] = useState({ title: '', sectionId: '', options: [] });
   const [option, setOption] = useState('');
   const [message, setMessage] = useState('');
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAnalyticsData = async () => {
@@ -40,11 +44,21 @@ const Author = ({ storyId }) => {
     }
   };
 
+  const handleBackClick = async () => {
+    navigate('/')
+  };
+
   return (
     <div
       className="min-h-screen flex flex-col justify-center bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: 'url(/images/muddyGlass.jpg)' }}>
       <div className="container mx-auto p-4 bg-amber-600 bg-opacity-70 borer rounded-3xl">
+      <button
+          onClick={handleBackClick}
+          className="mb-6 ml-8 mt-5 px-5 py-2 bg-neutral-600 text-white rounded hover:bg-blue-700 transition duration-400 flex items-center">
+          <ChevronLeftIcon className="w-5 h-5 mr-2" />
+          Back
+        </button>
         <h2 className="text-xl ml-10 font-bold mb-4">Story Analytics</h2>
         <table className="w-full ml-10 table-auto mb-6">
           <thead>
@@ -57,7 +71,7 @@ const Author = ({ storyId }) => {
           </thead>
           <tbody>
             {analytics.map((entry, index) => (
-              <tr key={index}>
+              <tr key = {index}>
                 <td>{entry.sectionId}</td>
                 <td>{entry.choiceId}</td>
                 <td>{entry.count}</td>
@@ -67,10 +81,10 @@ const Author = ({ storyId }) => {
           </tbody>
         </table>
 
-        <h2 className="text-xl font-bold ml-10 mb-4">Add your Story</h2>
-        <form onSubmit={handleSubmitStory} className="mb-4 ml-auto w-5/6">
+        <h2 className = "text-xl font-bold ml-10 mb-4">Add your Story</h2>
+        <form onSubmit = {handleSubmitStory} className="mb-4 ml-auto w-5/6">
           <div className="mb-2">
-            <label className="block text-sm font-medium">Story Title</label>
+            <label className = "block text-sm font-medium">Story Title</label>
             <input
               type="text"
               value={newStory.title}
@@ -79,7 +93,7 @@ const Author = ({ storyId }) => {
               required/>
           </div>
           <div className="mb-4">
-          <label className="block text-sm font-medium">Story Content</label>
+          <label className="block text-sm font-medium">Story</label>
           <textarea
             value={newStory.content}
             onChange={(e) => setNewStory({ ...newStory, content: e.target.value })}
