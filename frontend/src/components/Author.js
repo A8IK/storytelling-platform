@@ -6,7 +6,7 @@ import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 
 const Author = ({ storyId }) => {
   const [analytics, setAnalytics] = useState([]);
-  const [newStory, setNewStory] = useState({ title: '', sectionId: '', options: [] });
+  const [newStory, setNewStory] = useState({ title: '', sectionId: '', content: '', options: [] });
   const [option, setOption] = useState('');
   const [message, setMessage] = useState('');
 
@@ -21,7 +21,9 @@ const Author = ({ storyId }) => {
         console.error('Error fetching analytics:', error);
       }
     };
-    fetchAnalyticsData();
+    if(storyId){
+      fetchAnalyticsData();
+    }
   }, [storyId]);
 
   const handleAddOption = () => {
@@ -36,11 +38,11 @@ const Author = ({ storyId }) => {
     e.preventDefault();
     try {
       await createStory(newStory);
-      setMessage('Story added successfully!');
+      alert('Story added successfully!');
       setNewStory({ title: '', sectionId: '', options: [] });
     } catch (error) {
       console.error('Error adding story:', error);
-      setMessage('Failed to add story.');
+      alert('Failed to add story.');
     }
   };
 
